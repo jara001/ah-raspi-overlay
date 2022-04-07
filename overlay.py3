@@ -84,3 +84,48 @@ def update_status(status):
     display.fill_rect(xoffset, 24, 128, 32, False)
     display.text(status, xoffset, 24, True)
     display.show()
+
+
+######################
+# Arrowhead Sequence
+######################
+
+import time
+
+update_status("Obtaining ID...")
+
+try:
+    Client.obtain_id()
+
+except Exception as e:
+    print (e)
+    update_status(" << FAILED >>")
+
+providers = []
+
+if Client.id >= 0:
+    update_status("ID: %d" % Client.id)
+
+    time.sleep(1)
+
+    update_status("Finding host...")
+
+    while True:
+
+        time.sleep(.5)
+
+        success, providers = Client.orchestrate(Service)
+
+        if not success:
+            update_status("ID: %d O.fail" % Client.id)
+        else:
+            update_status("ID: %d P: %d" % (Client.id, len(providers)))
+
+        for i in range(9):
+            if len(providers) > 0:
+                break
+            time.sleep(.5)
+        else:
+            continue
+
+        break
