@@ -119,7 +119,8 @@ if Client.id >= 0:
         if not success:
             update_status("ID: %d O.fail" % Client.id)
         else:
-            update_status("ID: %d P: %d" % (Client.id, len(providers)))
+            #update_status("ID: %d P: %d" % (Client.id, len(providers)))
+            pass
 
         for i in range(9):
             if len(providers) > 0:
@@ -129,3 +130,18 @@ if Client.id >= 0:
             continue
 
         break
+
+time.sleep(.5)
+
+
+######################
+# Run required application
+######################
+
+import os
+
+# We want to run it even when no providers are located (local version).
+if len(providers) > 0:
+    os.system("websocat --text autoreconnect:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" autoreconnect:wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
+else:
+    os.system("/home/pi/optic_barrier_sw_ah")
