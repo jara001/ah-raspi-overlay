@@ -165,7 +165,7 @@ else:
 display.fill(0)
 display.show()
 
-display.text("Bye!", 51, 8, True)
+display.text("Bye!", 54, 12, True)
 display.show()
 
 time.sleep(1)
