@@ -74,3 +74,13 @@ Client = ArrowheadClient(
     interfaces = [Interface],
 )
 """
+
+
+######################
+# Display utilities
+######################
+
+def update_status(status):
+    display.fill_rect(xoffset, 24, 128, 32, False)
+    display.text(status, xoffset, 24, True)
+    display.show()
