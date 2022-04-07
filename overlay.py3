@@ -87,6 +87,17 @@ def update_status(status):
 
 
 ######################
+# GPIO Buttons
+######################
+
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+######################
 # Arrowhead Sequence
 ######################
 
@@ -123,7 +134,7 @@ if Client.id >= 0:
             pass
 
         for i in range(9):
-            if len(providers) > 0:
+            if len(providers) > 0 or GPIO.input(26):
                 break
             time.sleep(.5)
         else:
