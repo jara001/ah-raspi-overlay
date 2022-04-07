@@ -17,3 +17,17 @@ display = adafruit_ssd1305.SSD1305_I2C(128, 32, i2c)
 # Clear the display
 display.fill(0)
 display.show()
+
+
+######################
+# Arrowhead Logo
+######################
+
+from PIL import Image
+
+logo = Image.new("1", (display.width, display.height))
+logo.paste(Image.open("arrowhead_logo.bmp"))
+
+
+display.image(logo)
+display.show()
