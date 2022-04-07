@@ -20,14 +20,20 @@ display.show()
 
 
 ######################
-# Arrowhead Logo
+# Arrowhead Logo / Splash
 ######################
 
 from PIL import Image
 
-logo = Image.new("1", (display.width, display.height))
-logo.paste(Image.open("arrowhead_logo.bmp"))
+arrowhead_logo = Image.open("arrowhead_logo.bmp")
 
+logo = Image.new("1", (display.width, display.height))
+logo.paste(arrowhead_logo)
 
 display.image(logo)
+xoffset = arrowhead_logo.width + 3
+
+display.text("Arrowhead", xoffset, 0, True)
+display.text("Overlay", xoffset, 8, True)
+display.text("Loading...", xoffset, 24, True)
 display.show()
