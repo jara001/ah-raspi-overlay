@@ -145,3 +145,19 @@ if len(providers) > 0:
     os.system("websocat --text autoreconnect:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" autoreconnect:wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
+
+
+######################
+# Clear display and bye
+######################
+
+display.fill(0)
+display.show()
+
+display.text("Bye!", 51, 8, True)
+display.show()
+
+time.sleep(1)
+
+display.fill(0)
+display.show()
