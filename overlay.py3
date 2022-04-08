@@ -174,33 +174,38 @@ if Client.id >= 0:
 
     time.sleep(1)
 
-    update_status("Finding host...")
+    option = show_menu()
 
-    while True:
+    if option == MenuOptions.FindServer:
 
-        time.sleep(.5)
+        update_status("Finding host...")
 
-        success, providers = Client.orchestrate(Service)
+        while True:
 
-        if not success:
-            update_status("ID: %d O.fail" % Client.id)
-        else:
-            #update_status("ID: %d P: %d" % (Client.id, len(providers)))
-            pass
-
-        for i in range(9):
-            if len(providers) > 0 or GPIO.input(19) or GPIO.input(26):
-                if GPIO.input(19):
-                    update_status("Provider mode")
-
-                    Client.unregister_service(ProvidedService)
-                    provider_mode = Client.register_service(ProvidedService)
-                break
             time.sleep(.5)
-        else:
-            continue
 
-        break
+            success, providers = Client.orchestrate(Service)
+
+            if not success:
+                update_status("ID: %d O.fail" % Client.id)
+            else:
+                #update_status("ID: %d P: %d" % (Client.id, len(providers)))
+                pass
+
+            for i in range(9):
+                if len(providers) > 0 or GPIO.input(26):
+                    break
+                time.sleep(.5)
+            else:
+                continue
+
+            break
+
+    elif option == MenuOptions.ProviderMode:
+        update_status("Provider mode")
+
+        Client.unregister_service(ProvidedService)
+        provider_mode = Client.register_service(ProvidedService)
 
 time.sleep(.5)
 
