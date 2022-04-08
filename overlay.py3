@@ -62,6 +62,10 @@ Service = ArrowheadService(
     name = NAME_OF_THE_SERVICE,
 )
 
+ProvidedService = ArrowheadService(
+    name = NAME_OF_THE_SERVICE,
+)
+
 Client = ArrowheadClient(
     name = NAME_OF_THE_SYSTEM,
     address = SYSTEM_IP_ADDRESS,
@@ -94,6 +98,7 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
+GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
@@ -113,6 +118,7 @@ except Exception as e:
     update_status(" << FAILED >>")
 
 providers = []
+provider_mode = False
 
 if Client.id >= 0:
     update_status("ID: %d" % Client.id)
@@ -134,7 +140,12 @@ if Client.id >= 0:
             pass
 
         for i in range(9):
-            if len(providers) > 0 or GPIO.input(26):
+            if len(providers) > 0 or GPIO.input(19) or GPIO.input(26):
+                if GPIO.input(19):
+                    update_status("Provider mode")
+
+                    Client.unregister_service(ProvidedService)
+                    provider_mode = Client.register_service(ProvidedService)
                 break
             time.sleep(.5)
         else:
@@ -154,8 +165,19 @@ import os
 # We want to run it even when no providers are located (local version).
 if len(providers) > 0:
     os.system("websocat --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
+elif provider_mode:
+    update_status("Awaiting conn")
+    os.system("websocat -E --text ws-listen:127.0.0.1:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (Client.port))
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
+
+
+######################
+# Turn off provider
+######################
+
+if provider_mode:
+    Client.unregister_service(ProvidedService)
 
 
 ######################
