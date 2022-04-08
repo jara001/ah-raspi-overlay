@@ -153,7 +153,7 @@ import os
 
 # We want to run it even when no providers are located (local version).
 if len(providers) > 0:
-    os.system("websocat --text autoreconnect:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" autoreconnect:wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
+    os.system("websocat --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
 
