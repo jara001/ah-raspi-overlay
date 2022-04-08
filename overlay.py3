@@ -146,6 +146,7 @@ def show_menu():
 
         time.sleep(.1)
 
+    display.fill_rect(xoffset, 16, 128, 32, False)
 
     return options[index]
 
