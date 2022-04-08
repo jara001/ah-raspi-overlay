@@ -218,12 +218,20 @@ import os
 
 # We want to run it even when no providers are located (local version).
 if len(matches) > 0:
+    # When websocat fails, the barrier dies only when it tries to write something to the output.
     os.system("websocat -E --exec-sighup-on-stdin-close --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: %s\"" % (matches[0].get("provider").address, matches[0].get("service").metadata.get("authorization", "secret")))
 elif provider_mode:
     update_status("Awaiting conn")
     os.system("websocat -E --text ws-listen:127.0.0.1:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (Client.port))
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
+
+
+######################
+# Ensure barrier dying
+######################
+
+os.system("pkill -f optic_barrier_sw_ah")
 
 
 ######################
