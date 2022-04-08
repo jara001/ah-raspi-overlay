@@ -184,7 +184,7 @@ if Client.id >= 0:
 
             time.sleep(.5)
 
-            success, providers = Client.orchestrate(Service)
+            success, matches = Client.orchestrate(Service)
 
             if not success:
                 update_status("ID: %d O.fail" % Client.id)
@@ -193,7 +193,7 @@ if Client.id >= 0:
                 pass
 
             for i in range(9):
-                if len(providers) > 0 or GPIO.input(26):
+                if len(matches) > 0 or GPIO.input(26):
                     break
                 time.sleep(.5)
             else:
@@ -217,8 +217,8 @@ time.sleep(.5)
 import os
 
 # We want to run it even when no providers are located (local version).
-if len(providers) > 0:
-    os.system("websocat --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: secret\"" % providers[0].address)
+if len(matches) > 0:
+    os.system("websocat --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: %s\"" % (matches[0].get("provider").address, matches[0].get("service").metadata.get("authorization", "secret")))
 elif provider_mode:
     update_status("Awaiting conn")
     os.system("websocat -E --text ws-listen:127.0.0.1:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (Client.port))
