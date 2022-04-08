@@ -99,7 +99,55 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+######################
+# Menu
+######################
+
+from enum import Enum
+
+class MenuOptions(Enum):
+    FindServer = "FindServer"
+    ProviderMode = "ProvideLap"
+    LocalMode = "Local only"
+
+
+MENU_DESCRIPTION = "Select mode:"
+
+MENU_MOVE_LEFT = 19
+MENU_MOVE_RIGHT = 26
+MENU_SELECT = 21
+
+def show_menu():
+    display.fill_rect(xoffset, 16, 128, 32, False)
+    display.text(MENU_DESCRIPTION, xoffset, 16, True)
+
+    options = list(MenuOptions)
+    index = 0
+
+    update_status("< %s >" % options[0].value)
+
+    while not GPIO.input(MENU_SELECT):
+        redraw = False
+
+        if GPIO.input(MENU_MOVE_LEFT):
+            index = (index - 1) % len(options)
+            redraw = True
+
+        if GPIO.input(MENU_MOVE_RIGHT):
+            index = (index + 1) % len(options)
+            redraw = True
+
+        if redraw:
+            update_status("< %s >" % options[index].value)
+
+        time.sleep(.1)
+
+
+    return options[index]
 
 
 ######################
