@@ -3,6 +3,39 @@
 """Arrowhead Compliant overlay."""
 
 ######################
+# Exit sequence
+######################
+
+import signal
+
+provider_mode = False
+
+def exit_sequence(sig, frame):
+
+    # Ensure barrier dying
+    os.system("pkill -f optic_barrier_sw_ah")
+
+    # Turn off provider
+    if provider_mode:
+        Client.unregister_service(ProvidedService)
+
+    # Clear display and bye
+    display.fill(0)
+    display.show()
+
+    display.text("Bye!", 54, 12, True)
+    display.show()
+
+    time.sleep(1)
+
+    display.fill(0)
+    display.show()
+
+
+signal.signal(signal.SIGTERM, exit_sequence)
+
+
+######################
 # Display
 ######################
 
@@ -228,31 +261,7 @@ else:
 
 
 ######################
-# Ensure barrier dying
+# Clean exit the overlay
 ######################
 
-os.system("pkill -f optic_barrier_sw_ah")
-
-
-######################
-# Turn off provider
-######################
-
-if provider_mode:
-    Client.unregister_service(ProvidedService)
-
-
-######################
-# Clear display and bye
-######################
-
-display.fill(0)
-display.show()
-
-display.text("Bye!", 54, 12, True)
-display.show()
-
-time.sleep(1)
-
-display.fill(0)
-display.show()
+exit_sequence(signal.SIGTERM, frame)
