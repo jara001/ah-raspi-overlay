@@ -272,9 +272,21 @@ if Client.id >= 0:
 
         time.sleep(.5)
 
-        update_status(get_ip())
+        while True:
 
-        time.sleep(.5)
+            if GPIO.input(21):
+                break
+
+            update_status(get_ip())
+
+            time.sleep(1)
+
+            if GPIO.input(21):
+                break
+
+            update_status("P:%d I:%d S:%d" % (Client.id, Interface.id, ProvidedService.id))
+
+            time.sleep(1)
 
 time.sleep(.5)
 
