@@ -262,6 +262,40 @@ if return_code == 0:
         exit_sequence(signal.SIGTERM, None)
 
 
+# SW C++
+BRANCH = "devel/arrowhead-final"
+
+return_code = subprocess.call("cd ~/f1tenth-scoreapp && git fetch", shell = True)
+
+if return_code == 0:
+    latest = subprocess.check_output("cd ~/f1tenth-scoreapp && git rev-list --max-count=1 %s" % BRANCH, shell = True)
+    latest_remote = subprocess.check_output("cd ~/f1tenth-scoreapp && git rev-list --max-count=1 origin/%s" % BRANCH, shell = True)
+
+    if latest != latest_remote:
+        update_status("Updating...")
+
+        subprocess.check_output("cd ~/f1tenth-scoreapp && git pull origin %s" % BRANCH, shell = True)
+
+        update_status("Building...")
+
+        return_code = subprocess.call("~/f1tenth-scoreapp/barrier/optic_barrier_sw && mkdir -p build && cd build && cmake .. && make")
+
+        if return_code == 0:
+            update_status("Updating binary...")
+
+            subprocess.call("cp ~/f1tenth-scoreapp/barrier/optic_barrier_sw/build/optic_barrier_sw ~/optic_barrier_sw_ah")
+
+        else:
+            update_status("Building failed.")
+            time.sleep(1.5)
+
+
+        update_status("Restarting...")
+        time.sleep(.5)
+
+        exit_sequence(signal.SIGTERM, None)
+
+
 ######################
 # Arrowhead Sequence
 ######################
