@@ -111,7 +111,7 @@ display.image(logo)
 
 display.text("Arrowhead", xoffset, 0, True)
 display.text("Overlay", xoffset, 8, True)
-display.text("Loading...", xoffset, 24, True)
+display.text("Loading", xoffset, 24, True)
 display.show()
 
 
