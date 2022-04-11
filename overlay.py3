@@ -12,6 +12,7 @@ provider_mode = False
 sequence_run = False
 
 def exit_sequence(sig, frame):
+    global sequence_run
 
     if sequence_run:
         return
