@@ -9,8 +9,14 @@
 import signal
 
 provider_mode = False
+sequence_run = False
 
 def exit_sequence(sig, frame):
+
+    if sequence_run:
+        return
+
+    sequence_run = True
 
     # Ensure barrier dying
     os.system("pkill -f optic_barrier_sw_ah")
