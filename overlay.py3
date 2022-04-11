@@ -166,7 +166,7 @@ except Exception as e:
     print (e)
     update_status(" << FAILED >>")
 
-providers = []
+matches = []
 provider_mode = False
 
 if Client.id >= 0:
