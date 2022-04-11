@@ -102,8 +102,8 @@ logo.paste(arrowhead_logo)
 draw = ImageDraw.Draw(logo)
 font = ImageFont.truetype("LiberationSans-Regular.ttf", size=7)
 
-last_hash = subprocess.check_output("git log -1 --format=\"%h\"", shell = True)
-dirty = "dirty" in subprocess.check_output("git describe --always --dirty", shell = True)
+last_hash = str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))
+dirty = "dirty" in str(subprocess.check_output("git describe --always --dirty", shell = True))
 
 draw.text((128-4*len(last_hash), 8), last_hash.upper() if dirty else last_hash, fill = 255, font = font)
 
