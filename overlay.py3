@@ -264,4 +264,4 @@ else:
 # Clean exit the overlay
 ######################
 
-exit_sequence(signal.SIGTERM, frame)
+exit_sequence(signal.SIGTERM, None)
