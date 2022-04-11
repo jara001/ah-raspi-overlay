@@ -272,7 +272,7 @@ if return_code == 0:
     latest_remote = subprocess.check_output("cd ~/f1tenth-scoreapp && git rev-list --max-count=1 origin/%s" % BRANCH, shell = True)
 
     if latest != latest_remote:
-        update_status("Updating...")
+        update_status("Updating SW...")
 
         subprocess.check_output("cd ~/f1tenth-scoreapp && git pull origin %s" % BRANCH, shell = True)
 
