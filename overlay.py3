@@ -184,14 +184,16 @@ MENU_MOVE_LEFT = 19
 MENU_MOVE_RIGHT = 26
 MENU_SELECT = 21
 
+DEFAULT_OPTION = MenuOptions.LocalMode
+
 def show_menu():
     display.fill_rect(xoffset, 16, 128, 32, False)
     display.text(MENU_DESCRIPTION, xoffset, 16, True)
 
     options = list(MenuOptions)
-    index = 0
+    index = options.index(DEFAULT_OPTION)
 
-    update_status("< %s >" % options[0].value)
+    update_status("< %s >" % options[index].value)
 
     while not GPIO.input(MENU_SELECT):
         redraw = False
