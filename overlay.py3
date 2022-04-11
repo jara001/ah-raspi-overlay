@@ -43,6 +43,29 @@ signal.signal(signal.SIGTERM, exit_sequence)
 
 
 ######################
+# Obtain IP address
+######################
+
+import socket
+
+def get_ip():
+    """Get IP address.
+
+    Source: https://stackoverflow.com/questions/60656088/how-to-get-wireless-lan-adapter-wi-fi-ip-address-in-python
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
+
+######################
 # Display
 ######################
 
@@ -247,6 +270,12 @@ if Client.id >= 0:
         Client.unregister_service(ProvidedService)
         provider_mode = Client.register_service(ProvidedService)
 
+        time.sleep(.5)
+
+        update_status(get_ip())
+
+        time.sleep(.5)
+
 time.sleep(.5)
 
 
@@ -262,8 +291,8 @@ if len(matches) > 0:
     os.system("websocat -E --exec-sighup-on-stdin-close --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" wss://%s/barrier/1 -H \"Authorization: %s\"" % (matches[0].get("provider").address, matches[0].get("service").metadata.get("authorization", "secret")))
 elif provider_mode:
     update_status("Awaiting conn")
-    os.system("sh activate-provider.sh ws://127.0.0.1:%d" % (Client.port))
-    os.system("websocat -E --text ws-listen:127.0.0.1:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (Client.port))
+    os.system("sh activate-provider.sh ws://%s:%d" % (get_ip(), Client.port))
+    os.system("websocat -E --text ws-listen:%s:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (get_ip(), Client.port))
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
 
