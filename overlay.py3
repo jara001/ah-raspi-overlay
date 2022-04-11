@@ -224,6 +224,7 @@ def show_menu():
         if auto_start:
             auto_time -= .1
             display.text("%d" % auto_time, display.width - 6, 16, True)
+            display.show()
             if auto_time <= 0:
                 break
 
