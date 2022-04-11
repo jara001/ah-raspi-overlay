@@ -2,7 +2,7 @@
 # overlay.py3
 """Arrowhead Compliant overlay."""
 
-import os
+import os, subprocess
 
 
 ######################
@@ -90,14 +90,24 @@ display.show()
 ######################
 
 from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 arrowhead_logo = Image.open("arrowhead_logo.bmp")
+xoffset = arrowhead_logo.width + 3
 
 logo = Image.new("1", (display.width, display.height))
 logo.paste(arrowhead_logo)
 
+draw = ImageDraw.Draw(logo)
+font = ImageFont.truetype("LiberationSans-Regular.ttf", size=7)
+
+last_hash = subprocess.check_output("git log -1 --format=\"%h\"")
+dirty = "dirty" in subprocess.check_output("git describe --always --dirty")
+
+draw.text((128-4*len(last_hash), 8), last_hash.upper() if dirty else last_hash, fill = 255, font = font)
+
 display.image(logo)
-xoffset = arrowhead_logo.width + 3
 
 display.text("Arrowhead", xoffset, 0, True)
 display.text("Overlay", xoffset, 8, True)
@@ -242,8 +252,6 @@ def show_menu():
 ######################
 
 # Source: https://gist.github.com/skabber/1213826
-
-import subprocess
 
 return_code = subprocess.call("git fetch", shell = True)
 
