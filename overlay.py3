@@ -185,10 +185,17 @@ MENU_MOVE_RIGHT = 26
 MENU_SELECT = 21
 
 DEFAULT_OPTION = MenuOptions.LocalMode
+AUTO_SELECT_DELAY = 5
 
 def show_menu():
+    auto_start = False
+    auto_time = AUTO_SELECT_DELAY
+
     display.fill_rect(xoffset, 16, 128, 32, False)
     display.text(MENU_DESCRIPTION, xoffset, 16, True)
+    if auto_time > 0:
+        auto_start = True
+        display.text("%d" % auto_time, display.width - 6, 16, True)
 
     options = list(MenuOptions)
     index = options.index(DEFAULT_OPTION)
@@ -199,17 +206,26 @@ def show_menu():
         redraw = False
 
         if GPIO.input(MENU_MOVE_LEFT):
+            auto_start = False
             index = (index - 1) % len(options)
             redraw = True
 
         if GPIO.input(MENU_MOVE_RIGHT):
+            auto_start = False
             index = (index + 1) % len(options)
             redraw = True
 
         if redraw:
+            display.text(" ", display.width - 6, 16, True)
             update_status("< %s >" % options[index].value)
 
         time.sleep(.1)
+
+        if auto_start:
+            auto_time -= .1
+            display.text("%d" % auto_time, display.width - 6, 16, True)
+            if auto_time <= 0:
+                break
 
     display.fill_rect(xoffset, 16, 128, 32, False)
 
