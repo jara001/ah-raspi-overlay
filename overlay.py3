@@ -2,6 +2,9 @@
 # overlay.py3
 """Arrowhead Compliant overlay."""
 
+import os
+
+
 ######################
 # Exit sequence
 ######################
@@ -331,8 +334,6 @@ time.sleep(.5)
 ######################
 # Run required application
 ######################
-
-import os
 
 # We want to run it even when no providers are located (local version).
 if len(matches) > 0:
