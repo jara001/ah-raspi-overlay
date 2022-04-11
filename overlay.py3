@@ -278,12 +278,12 @@ if return_code == 0:
 
         update_status("Building...")
 
-        return_code = subprocess.call("~/f1tenth-scoreapp/barrier/optic_barrier_sw && mkdir -p build && cd build && cmake .. && make")
+        return_code = subprocess.call("cd ~/f1tenth-scoreapp/barrier/optic_barrier_sw && mkdir -p build && cd build && cmake .. && make", shell = True)
 
         if return_code == 0:
             update_status("Updating binary...")
 
-            subprocess.call("cp ~/f1tenth-scoreapp/barrier/optic_barrier_sw/build/optic_barrier_sw ~/optic_barrier_sw_ah")
+            subprocess.call("cp ~/f1tenth-scoreapp/barrier/optic_barrier_sw/build/optic_barrier_sw ~/optic_barrier_sw_ah", shell = True)
 
         else:
             update_status("Building failed.")
