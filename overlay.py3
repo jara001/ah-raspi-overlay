@@ -216,14 +216,14 @@ def show_menu():
             redraw = True
 
         if redraw:
-            display.fill_rect(display.width - 6, 16, 128, 24, False)
+            display.fill_rect(display.width - 6, 8, 128, 16, False)
             update_status("< %s >" % options[index].value)
 
         time.sleep(.1)
 
         if auto_start:
             auto_time -= .1
-            display.fill_rect(display.width - 6, 16, 128, 24, False)
+            display.fill_rect(display.width - 6, 8, 128, 16, False)
             display.text("%d" % auto_time, display.width - 6, 16, True)
             display.show()
             if auto_time <= 0:
