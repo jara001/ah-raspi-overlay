@@ -235,6 +235,31 @@ def show_menu():
 
 
 ######################
+# Auto-Update sequence
+######################
+
+# Source: https://gist.github.com/skabber/1213826
+
+import subprocess
+
+return_code = subprocess.call("git fetch", shell = True)
+
+if return_code == 0:
+    latest = subprocess.check_output("git rev-list --max-count=1 master", shell = True)
+    latest_remote = subprocess.check_output("git rev-list --max-count=1 origin/master", shell = True)
+
+    if latest != latest_remote:
+        update_status("Updating...")
+
+        subprocess.check_output("git pull origin master", shell = True)
+
+        update_status("Restarting...")
+        time.sleep(.5)
+
+        exit_sequence(signal.SIGTERM, None)
+
+
+######################
 # Arrowhead Sequence
 ######################
 
