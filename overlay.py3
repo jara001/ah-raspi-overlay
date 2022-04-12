@@ -3,7 +3,7 @@
 """Arrowhead Compliant overlay."""
 
 import os, subprocess
-
+import time
 
 ######################
 # Exit sequence
@@ -308,8 +308,6 @@ if return_code == 0:
 ######################
 # Arrowhead Sequence
 ######################
-
-import time
 
 update_status("Obtaining ID...")
 
