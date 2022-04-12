@@ -186,9 +186,9 @@ GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 from enum import Enum
 
 class MenuOptions(Enum):
-    FindServer = "FindServer"
-    ProviderMode = "ProvideLap"
-    LocalMode = "Local only"
+    FindServer = "FindServer", True
+    ProviderMode = "ProvideLap", True
+    LocalMode = "Local only", True
 
 
 MENU_DESCRIPTION = "Select mode:"
@@ -213,9 +213,9 @@ def show_menu():
     options = list(MenuOptions)
     index = options.index(DEFAULT_OPTION)
 
-    update_status("< %s >" % options[index].value)
+    update_status("< %s >" % options[index].value[0])
 
-    while not GPIO.input(MENU_SELECT):
+    while not (not GPIO.input(MENU_SELECT) and options[index].value[1]):
         redraw = False
 
         if GPIO.input(MENU_MOVE_LEFT):
@@ -230,7 +230,7 @@ def show_menu():
 
         if redraw:
             display.fill_rect(display.width - 6, 8, 128, 16, False)
-            update_status("< %s >" % options[index].value)
+            update_status("< %s >" % options[index].value[0])
 
         time.sleep(.1)
 
