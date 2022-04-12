@@ -189,7 +189,7 @@ class MenuOptions(Enum):
     FindServer = "FindServer", True
     ProviderMode = "ProvideLap", True
     LocalMode = "Local only", True
-    Version = " " + str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3], False
+    Version = (str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]).center(10), False
 
 
 MENU_DESCRIPTION = "Select mode:"
