@@ -41,6 +41,8 @@ def exit_sequence(sig, frame):
     display.fill(0)
     display.show()
 
+    exit(0)
+
 
 signal.signal(signal.SIGTERM, exit_sequence)
 
