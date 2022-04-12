@@ -99,19 +99,19 @@ xoffset = arrowhead_logo.width + 3
 logo = Image.new("1", (display.width, display.height))
 logo.paste(arrowhead_logo)
 
-draw = ImageDraw.Draw(logo)
-font = ImageFont.truetype("LiberationSans-Regular.ttf", size=7)
+#draw = ImageDraw.Draw(logo)
+#font = ImageFont.truetype("LiberationSans-Regular.ttf", size=7)
 
-last_hash = str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]
-dirty = "dirty" in str(subprocess.check_output("git describe --always --dirty", shell = True))
+#last_hash = str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]
+#dirty = "dirty" in str(subprocess.check_output("git describe --always --dirty", shell = True))
 
-draw.text((128-4*len(last_hash), 24), last_hash.upper() if dirty else last_hash, fill = 255, font = font)
+#draw.text((128-4*len(last_hash), 24), last_hash.upper() if dirty else last_hash, fill = 255, font = font)
 
 display.image(logo)
 
 display.text("Arrowhead", xoffset, 0, True)
 display.text("Overlay", xoffset, 8, True)
-display.text("Loading", xoffset, 24, True)
+display.text("Loading...", xoffset, 24, True)
 display.show()
 
 
@@ -189,6 +189,7 @@ class MenuOptions(Enum):
     FindServer = "FindServer", True
     ProviderMode = "ProvideLap", True
     LocalMode = "Local only", True
+    Version = " " + str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3], False
 
 
 MENU_DESCRIPTION = "Select mode:"
