@@ -215,7 +215,7 @@ def show_menu():
 
     update_status("< %s >" % options[index].value[0])
 
-    while not (not GPIO.input(MENU_SELECT) and options[index].value[1]):
+    while not (GPIO.input(MENU_SELECT) and options[index].value[1]):
         redraw = False
 
         if GPIO.input(MENU_MOVE_LEFT):
