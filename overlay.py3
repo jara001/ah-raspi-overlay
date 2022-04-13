@@ -397,7 +397,7 @@ if len(matches) > 0:
         Enum(
             "Endpoints",
             [
-                ("barrier/%d" % _i, ("barrier/%d" % _i, True)) for _i in range(1, matches[0].get("service").metadata.get("barriers", 2))
+                ("barrier/%d" % _i, ("barrier/%d" % _i, True)) for _i in range(1, int(matches[0].get("service").metadata.get("barriers", 2)) + 1)
             ]
         )
     ).show()
