@@ -212,6 +212,9 @@ class Menu(object):
     def show(self):
         global display, xoffset
 
+        if len(list(self.options)) == 0:
+            return None
+
         auto_start = False
         auto_time = self.auto_select_delay
 
@@ -405,8 +408,13 @@ if len(matches) > 0:
         )
     ).show()
 
+    if endpoint == None:
+        endpoint = ""
+    else:
+        endpoint = endpoint.value[0]
+
     # When websocat fails, the barrier dies only when it tries to write something to the output.
-    os.system("websocat -E --exec-sighup-on-stdin-close --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" ws://%s:%d/%s -H \"Authorization: %s\"" % (matches[0].get("provider").address, matches[0].get("provider").port, endpoint.value[0], matches[0].get("service").metadata.get("authorization", "secret")))
+    os.system("websocat -E --exec-sighup-on-stdin-close --text cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\" ws://%s:%d/%s -H \"Authorization: %s\"" % (matches[0].get("provider").address, matches[0].get("provider").port, endpoint, matches[0].get("service").metadata.get("authorization", "secret")))
 elif provider_mode:
     update_status("Awaiting conn")
     os.system("sh activate-provider.sh ws://%s:%d" % (get_ip(), Client.port))
