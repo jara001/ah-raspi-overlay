@@ -224,7 +224,7 @@ class Menu(object):
         options = list(self.options)
         index = options.index(self.default_option)
 
-        update_status("< %s >" % options[index].value[0])
+        update_status("< %s >" % options[index].value[0].center(10))
 
         while not (GPIO.input(self.MENU_SELECT) and options[index].value[1]):
             redraw = False
@@ -241,7 +241,7 @@ class Menu(object):
 
             if redraw:
                 display.fill_rect(display.width - 6, 8, 128, 16, False)
-                update_status("< %s >" % options[index].value[0])
+                update_status("< %s >" % options[index].value[0].center(10))
 
             time.sleep(.1)
 
