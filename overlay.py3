@@ -402,7 +402,7 @@ if len(matches) > 0:
         Enum(
             "Providers",
             [
-                (_i, (match.get("provider").name, True)) for _i, match in enumerate(matches)
+                (str(_i), (match.get("provider").name, True)) for _i, match in enumerate(matches)
             ]
         )
     ).show()
