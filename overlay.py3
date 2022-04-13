@@ -396,10 +396,9 @@ if len(matches) > 0:
         "Select endp:",
         Enum(
             "Endpoints",
-            {
-                "barrier/1": ("barrier/1", True),
-                "barrier/2": ("barrier/2", True),
-            }
+            [
+                ("barrier/%d" % _i, ("barrier/%d" % _i, True)) for _i in range(1, matches[0].get("service").metadata.get("barriers", 2))
+            ]
         )
     ).show()
 
