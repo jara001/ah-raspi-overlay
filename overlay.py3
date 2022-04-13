@@ -205,8 +205,10 @@ class Menu(object):
 
         self.description = description
         self.options = options
-        self.default_option = default_option if default_option is not None else list(options)[0]
-        self.auto_select_delay = auto_select_delay
+
+        if len(list(options)) != 0:
+            self.default_option = default_option if default_option is not None else list(options)[0]
+            self.auto_select_delay = auto_select_delay
 
 
     def show(self):
