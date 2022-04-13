@@ -194,60 +194,71 @@ class MenuOptions(Enum):
     Version = (str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]).center(10), False
 
 
-MENU_DESCRIPTION = "Select mode:"
+class Menu(object):
 
-MENU_MOVE_LEFT = 19
-MENU_MOVE_RIGHT = 26
-MENU_SELECT = 21
+    MENU_MOVE_LEFT = 19
+    MENU_MOVE_RIGHT = 26
+    MENU_SELECT = 21
 
-DEFAULT_OPTION = MenuOptions.LocalMode
-AUTO_SELECT_DELAY = 5
+    def __init__(self, description, options, default_option = None, auto_select_delay = -1):
+        super(Menu, self).__init__()
 
-def show_menu():
-    auto_start = False
-    auto_time = AUTO_SELECT_DELAY
+        self.description = description
+        self.options = options
+        self.default_option = default_option if default_option is not None else list(options)[0]
+        self.auto_select_delay = auto_select_delay
 
-    display.fill_rect(xoffset, 16, 128, 32, False)
-    display.text(MENU_DESCRIPTION, xoffset, 16, True)
-    if auto_time > 0:
-        auto_start = True
-        display.text("%d" % auto_time, display.width - 6, 16, True)
 
-    options = list(MenuOptions)
-    index = options.index(DEFAULT_OPTION)
+    def show(self):
+        global display, xoffset
 
-    update_status("< %s >" % options[index].value[0])
+        auto_start = False
+        auto_time = self.auto_select_delay
 
-    while not (GPIO.input(MENU_SELECT) and options[index].value[1]):
-        redraw = False
-
-        if GPIO.input(MENU_MOVE_LEFT):
-            auto_start = False
-            index = (index - 1) % len(options)
-            redraw = True
-
-        if GPIO.input(MENU_MOVE_RIGHT):
-            auto_start = False
-            index = (index + 1) % len(options)
-            redraw = True
-
-        if redraw:
-            display.fill_rect(display.width - 6, 8, 128, 16, False)
-            update_status("< %s >" % options[index].value[0])
-
-        time.sleep(.1)
-
-        if auto_start:
-            auto_time -= .1
-            display.fill_rect(display.width - 6, 8, 128, 16, False)
+        display.fill_rect(xoffset, 16, 128, 32, False)
+        display.text(self.description, xoffset, 16, True)
+        if auto_time > 0:
+            auto_start = True
             display.text("%d" % auto_time, display.width - 6, 16, True)
-            display.show()
-            if auto_time <= 0:
-                break
 
-    display.fill_rect(xoffset, 16, 128, 32, False)
+        options = list(self.options)
+        index = options.index(self.default_option)
 
-    return options[index]
+        update_status("< %s >" % options[index].value[0])
+
+        while not (GPIO.input(self.MENU_SELECT) and options[index].value[1]):
+            redraw = False
+
+            if GPIO.input(self.MENU_MOVE_LEFT):
+                auto_start = False
+                index = (index - 1) % len(options)
+                redraw = True
+
+            if GPIO.input(self.MENU_MOVE_RIGHT):
+                auto_start = False
+                index = (index + 1) % len(options)
+                redraw = True
+
+            if redraw:
+                display.fill_rect(display.width - 6, 8, 128, 16, False)
+                update_status("< %s >" % options[index].value[0])
+
+            time.sleep(.1)
+
+            if auto_start:
+                auto_time -= .1
+                display.fill_rect(display.width - 6, 8, 128, 16, False)
+                display.text("%d" % auto_time, display.width - 6, 16, True)
+                display.show()
+                if auto_time <= 0:
+                    break
+
+        display.fill_rect(xoffset, 16, 128, 32, False)
+
+        return options[index]
+
+
+main_menu = Menu("Select mode:", MenuOptions, MenuOptions.LocalMode, 5)
 
 
 ######################
@@ -328,7 +339,7 @@ if Client.id >= 0:
 
     time.sleep(1)
 
-    option = show_menu()
+    option = main_menu.show()
 
     if option == MenuOptions.FindServer:
 
