@@ -400,7 +400,7 @@ if len(matches) > 0:
             #    ("barrier/%d" % _i, ("barrier/%d" % _i, True)) for _i in range(1, int(matches[0].get("service").metadata.get("barriers", 2)) + 1)
             #]
             [
-                (key, (value, True)) for key, value in matches[0].get("service").metadata if key.startswith("endpoint")
+                (key, (value, True)) for key, value in matches[0].get("service").metadata.items() if key.startswith("endpoint")
             ]
         )
     ).show()
