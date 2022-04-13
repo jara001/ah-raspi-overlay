@@ -200,7 +200,7 @@ class Menu(object):
     MENU_MOVE_RIGHT = 26
     MENU_SELECT = 21
 
-    def __init__(self, description, options, default_option = None, auto_select_delay = -1):
+    def __init__(self, description, options, default_option = None, auto_select_delay = -1, auto_select = False):
         super(Menu, self).__init__()
 
         self.description = description
@@ -209,6 +209,7 @@ class Menu(object):
         if len(list(options)) != 0:
             self.default_option = default_option if default_option is not None else list(options)[0]
             self.auto_select_delay = auto_select_delay
+            self.auto_select = auto_select
 
 
     def show(self):
@@ -216,6 +217,9 @@ class Menu(object):
 
         if len(list(self.options)) == 0:
             return None
+
+        if len(list(self.options)) == 1 and self.auto_select:
+            return list(self.options)[0]
 
         auto_start = False
         auto_time = self.auto_select_delay
@@ -404,7 +408,8 @@ if len(matches) > 0:
             [
                 (str(_i), (match.get("provider").name, True)) for _i, match in enumerate(matches)
             ]
-        )
+        ),
+        auto_select = True,
     ).show()
 
     # Select endpoint
@@ -418,7 +423,8 @@ if len(matches) > 0:
             [
                 (key, (value, True)) for key, value in matches[int(provider.name)].get("service").metadata.items() if key.startswith("endpoint")
             ]
-        )
+        ),
+        auto_select = True,
     ).show()
 
     if endpoint == None:
