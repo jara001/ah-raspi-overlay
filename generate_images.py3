@@ -45,7 +45,7 @@ class SimulatedScreen(adafruit_framebuf.FrameBuffer):
         if status == "":
             screen.save("screen_%d.bmp" % self.image_index)
         else:
-            screen.save("screen_%s.bmp" % status.replace(".", "").replace(":", "").replace("<", "").replace(">", "").replace("/", "_").replace(" ", "_").lower())
+            screen.save("screen_%s.bmp" % status.replace(".", "").replace(":", "").replace("<", "").replace(">", "").replace("/", "_").replace(" ", "_").replace("__", "_").lower())
 
         self.image_index += 1
 
@@ -86,9 +86,7 @@ def update_status(status, save_name = ""):
 # Loading screen
 display.text("Arrowhead", xoffset, 0, True)
 display.text("Overlay", xoffset, 8, True)
-display.text("Loading...", xoffset, 24, True)
-
-display.show()
+update_status("Loading...")
 
 
 # Git updates (overlay)
@@ -115,7 +113,7 @@ update_status(" << FAILED >>")
 
 
 ## AHCore Discovery success
-update_status("ID: %d" % 7)
+update_status("ID: %d" % 7, "discovery_success")
 
 
 # Main menu
@@ -132,30 +130,30 @@ update_status("< %s >" % "FindServer".center(10), "findserver_with_countdown")
 # Other menu options
 update_status("< %s >" % "ProvideLap".center(10))
 update_status("< %s >" % "Local only".center(10))
-update_status("< %s >" % "bfed32c".center(10))
+update_status("< %s >" % "bfed32c".center(10), "githash")
 
 
 # Mode 1 Find Server
 update_status("Finding host...")
 
 # M1 Unable to orchestrate
-update_status("ID: %d O.fail" % 7)
+update_status("ID: %d O.fail" % 7, "orch_failed")
 
 # M1 Multiple hosts
 display.fill_rect(xoffset, 16, 128, 32, False)
 display.text("Use provider:", xoffset, 16, True)
-update_status("< %s >" % "scoreapp".center(10))
+update_status("< %s >" % "scoreapp".center(10), "select_provider")
 
 # M1 Multiple endpoints
 display.fill_rect(xoffset, 16, 128, 32, False)
 display.text("Select endp:", xoffset, 16, True)
-update_status("< %s >" % "barrier/1".center(10))
+update_status("< %s >" % "barrier/1".center(10), "select_endpoint")
 
 
 # Mode 2 Provide lap
 update_status("Provider mode")
 
-update_status("P:%d I:%d S:%d" % (7, 2, 16))
+update_status("P:%d I:%d S:%d" % (7, 2, 16), "provider_ids")
 
 # M2 Awaiting connection
 update_status("Awaiting conn")
@@ -166,4 +164,4 @@ update_status("Awaiting conn")
 display.fill(0)
 
 display.text("Bye!", 54, 12, True)
-display.show()
+display.save("bye")
