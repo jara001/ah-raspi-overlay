@@ -150,6 +150,8 @@ display.text("Select endp:", xoffset, 16, True)
 update_status("< %s >" % "barrier/1".center(10), "select_endpoint")
 
 
+display.fill_rect(xoffset, 16, 128, 32, False)
+
 # Mode 2 Provide lap
 update_status("Provider mode")
 
