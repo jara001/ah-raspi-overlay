@@ -53,6 +53,31 @@ Client = ArrowheadClient(
 )
 ```
 
+### Systemd service definition
+
+The overlay is meant to run all the time on the Raspberry Pi. This can be acheived by creating a systemd service. An example of such configuration is shown below:
+
+_Note: In the overlay we expect that the service restarts itself upon exiting the overlay. This behaviour is used for updating the code._
+
+```
+[Unit]
+Description=Arrowhead Overlay for Optic Barrier
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/ah-overlay
+ExecStart=python3 overlay.py3
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=basic.target
+```
+
 
 ## Controls
 
