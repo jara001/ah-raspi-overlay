@@ -1,22 +1,58 @@
 # Arrowhead Overlay for Raspberry Pi
-_Making your system Arrowhead Compliant without touching the code._
 
-Example of an application running around your program.
+This application serves as an Arrowhead overlay for the **Optic barrier** of [f1tenth-scoreapp](https://github.com/CTU-IIG/f1tenth-scoreapp) race measuring system.
+
+It works in three modes:
+
+
+a. **Scoreapp compatible mode**, "FindServer"
+
+In this mode the overlay establishes a communication with the Arrowhead Core to find an active `scoreapp` provider (which is created by the backend's Arrowhead overlay).
+
+The `scoreapp` Service has following metadata:
+- `authorization` -- secret keyphrase for authorizing the barrier (it is used by the barrier to authorize itself with the scoreapp)
+- `endpoint_X` -- available endpoint for the barrier to connect to
+
+_Note: The amount of endpoints is not limited. Each parameter starting with `endpoint_` should be treated as an endpoint option._
+
+
+b. **Lap time provider**, "ProvideLap"
+
+In this mode the overlay register itself to the Arrowhead Core as a `laptime` provider. Any authorized consumers may then receive the current lap time from this barrier.
+
+The `laptime` Service has following metadata:
+- `address` -- alternative (or real) IP address of the barrier
+
+
+c. **Offline mode**, "Local only"
+
+In this mode the overlay does not communicate with the Arrowhead Core and starts the barrier software without any external communication.
 
 
 ## Requirements
+- `f1tenth-scoreapp` cloned to `~/f1tenth-scoreapp`
+  - GitHub: [https://github.com/CTU-IIG/f1tenth-scoreapp](https://github.com/CTU-IIG/f1tenth-scoreapp)
 - `adafruit_circuitpython_ssd1305`
-- `aclpy`: [GitHub](https://github.com/jara001/ah-acl-py)
+  - `python3 -m pip install adafruit_circuitpython_ssd1305`
+- `aclpy >= 0.2.0`
+  - GitHub: [https://github.com/CTU-IIG/ah-acl-py](https://github.com/CTU-IIG/ah-acl-py)
+  - Wheel: [v0.2.0](https://github.com/jara001/ah-acl-py/releases/download/v0.2.0/aclpy-0.2.0-py3-none-any.whl)
 - `python3-pil`
+  - `sudo apt install python3-pil`
 - `RPi.GPIO`
+  - `python3 -m pip install RPi.GPIO`
+
+_Note: For generating the screen images, you can install only `python3-pil` and `adafruit_circuitpython_framebuf`._
 
 
-## Usage
+## Starting up
 
-1. Obtain certificates (`.p12`, `.pub`) for your system from your local Arrowhead Core.
-2. Obtain also the certificate authority `.ca` for your cloud.
-3. Create a configuration file `ahconf.py`.
-4. Run the `overlay.py3`.
+1. Compile the barrier software in `~/f1tenth-scoreapp/barrier/optic_barrier_sw/`.
+2. Copy the binary to `~/optic_barrier_sw_ah`.
+3. Obtain certificates (`.p12`, `.pub`) for your system from your local Arrowhead Core.
+4. Obtain also the certificate authority `.ca` for your cloud.
+5. Create a configuration file `ahconf.py`.
+6. Run the `overlay.py3`.
 
 
 ### Configuration example
