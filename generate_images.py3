@@ -133,6 +133,9 @@ update_status("< %s >" % "Local only".center(10))
 update_status("< %s >" % "bfed32c".center(10), "githash")
 
 
+display.fill_rect(xoffset, 16, 128, 32, False)
+
+
 # Mode 1 Find Server
 update_status("Finding host...")
 
