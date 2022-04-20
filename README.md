@@ -73,7 +73,7 @@ The overlay currently works in three modes (selected by the user):
 ## Application behaviour
 
 ### Loading
-Upon starting, the application loads all required libraries and creates necessary variables. The screen shows loading:
+Upon starting, the overlay loads all required libraries and creates necessary variables. During this, the screen shows loading status:
 
 ![Arrowhead Overlay Loading...](./doc/screen_loading.bmp)
 
@@ -83,35 +83,35 @@ At first the overlay checks this repository for updates of the overlay. When cha
 ![Arrowhead Overlay Updating...](./doc/screen_updating.bmp)
 ![Arrowhead Overlay Restarting...](./doc/screen_restarting.bmp)
 
-_Note: Actually the application exits. We expect that it is restarted by the system itself._
+_Note: Actually, the application exits. We expect that it is restarted by the system itself._
 
 ### Updating barrier software
-The same applies for repository of the barrier software. Upon finding new commits, the code is rebuilt and binary is moved to an appropriate location:
+The same applies for repository of the barrier software. Upon finding new commits, the barrier application is rebuilt and the resulting binary is moved to an appropriate location:
 
 ![Arrowhead Overlay Updating SW...](./doc/screen_updating_sw.bmp)
 ![Arrowhead Overlay Building...](./doc/screen_building.bmp)
 ![Arrowhead Overlay Updating binary...](./doc/screen_updating_binary.bmp)
 ![Arrowhead Overlay Restarting...](./doc/screen_restarting.bmp)
 
-_Note: In case that anything fails, following screen is shown before restart. As a design by-product, the building is not attempted again unless a new update is found._
+_Note: In case that anything fails, following screen is shown before restart. As a design by-product, the building phase is not attempted again unless a new update is found._
 
 ![Arrowhead Overlay Building failed...](./doc/screen_building_failed.bmp)
 
 ### Arrowhead Discovery
-Then the overlay tries to communicate with Arrowhead Core, obtaining its ID:
+Afterwards the overlay tries to communicate with Arrowhead Core, obtaining its system ID:
 
 ![Arrowhead Overlay Obtaining ID...](./doc/screen_obtaining_id.bmp)
 
-Upon success, received ID is briefly shown:
+Upon success, received system ID is briefly shown:
 
 ![Arrowhead Overlay ID: 7](./doc/screen_discovery_success.bmp)
 
-On the other hand, when this step fails, it is display to the user and the overlay starts "Local only" mode of the barrier:
+On the other hand, when this step fails, it is displayed to the user and the overlay starts the "Local only" mode of the barrier:
 
 ![Arrowhead Overlay << Failed >>](./doc/screen__failed_.bmp)
 
 ### Main Menu
-In case that ID is successfully received from Arrowhead Core, main menu is shown. Here, the user can select operation mode:
+In case that ID is successfully received from Arrowhead Core, main menu is shown. Here, the user can select operation mode using `LEFT` and `RIGHT` buttons, confirming the choice with `OK` button:
 
 ![Arrowhead Overlay Select mode: 5 < FindServer >...](./doc/screen_findserver_with_countdown.bmp)
 ![Arrowhead Overlay Select mode: 5 < ProvideLap >...](./doc/screen__providelap_.bmp)
@@ -120,31 +120,29 @@ In case that ID is successfully received from Arrowhead Core, main menu is shown
 
 _Note: The last menu item shows the short hash of current git commit._
 
-In its default state the overlay automatically selects the first displayed menu item in 5 seconds. This countdown is stopped upon pressing on of the buttons, hiding the remaining time:
+In its default state the overlay automatically selects the first displayed menu item in 5 seconds. This countdown is stopped upon pressing one of the buttons, hiding the remaining time:
 
 ![Arrowhead Overlay Select mode: < FindServer >...](./doc/screen__findserver_.bmp)
 
-To control the menu, `LEFT`, `RIGHT` and `OK` keys are used.
-
 #### Find Server
-When "FindServer" mode is selected, the overlay tries to find proper providers using orchestration in Arrowhead Core. This is indicated by following screen:
+When "FindServer" mode is selected, the overlay tries to find appropriate providers using orchestration mechanism in the Arrowhead Core. This is indicated by the following screen:
 
 ![Arrowhead Overlay Finding host...](./doc/screen_finding_host.bmp)
 
-Orchestration is repeated every 5 seconds. In case that orchestration fails (i.e., the overlay is unable to communicate with Orchestrator), a screen with overlay ID is shown:
+Orchestration is repeated every 5 seconds. In case that orchestration fails (i.e., the overlay is unable to communicate with Orchestrator), a screen with overlay's system ID and 'O.fail' is shown:
 
 ![Arrowhead Overlay ID: 7 O.fail](./doc/screen_orch_failed.bmp)
 
 Upon receiving valid provider, barrier software is launched with websocat that sends lap time to the remote server.
 
-_Note: It is turn to "Local only" mode by holding the `RIGHT` button._
+_Note: It is possible to turn into the "Local only" mode by holding the `RIGHT` button._
 
 ##### Multiple providers
-When multiple providers are received using orchestration a small menu is shown for user to select the required one:
+When multiple providers are received using orchestration a small menu is shown for the user to select one:
 
 ![Arrowhead Overlay Use provider: <  scoreapp  >](./doc/screen_select_provider.bmp)
 
-The controls are same as for the main menu.
+The controls are the same as for the main menu.
 
 ##### Multiple endpoints
 When multiple endpoints on the selected provider are found, another menu is shown:
@@ -162,14 +160,14 @@ When successful, IDs of the overlay, service and selected interface are shown:
 
 ![Arrowhead Overlay P:7 I:2 S:16](./doc/screen_provider_ids.bmp)
 
-Upon pressing `OK` button, the barrier software is launched. As an active connection is required to start the software, it is temporarily launched locally. Meantime following screen is shown:
+Upon pressing `OK` button, the barrier software is launched. As an active connection is required to start the software, it is temporarily launched locally. Meantime, the following screen is shown:
 
 ![Arrowhead Overlay Awaiting conn](./doc/screen_awaiting_conn.bmp)
 
 _Note: This active connection is a limitation of the used websocat. It is not possible to launch the application right away._
 
 ### Exiting the overlay
-When the overlay exits, it removes itself from Arrowhead service providers (if registered). Before turning self off it shows a simple bye:
+When the overlay exits, it removes itself from the Arrowhead service providers (if registered). Before turning self off, the overlay shows a simple bye:
 
 ![Arrowhead Overlay Bye!](./doc/screen_bye.bmp)
 
