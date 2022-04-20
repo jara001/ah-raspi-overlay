@@ -37,7 +37,7 @@ Service = ArrowheadService(
 ProvidedService = ArrowheadService(
     name = "laptime",
     metadata = {
-        "ip": "192.168.12.22",
+        "address": "192.168.12.22",
     },
 )
 
