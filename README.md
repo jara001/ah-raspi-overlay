@@ -21,7 +21,7 @@ b. **Lap time provider**, "ProvideLap"
 In this mode the overlay register itself to the Arrowhead Core as a `laptime` provider. Any authorized consumers may then receive the current lap time from this barrier.
 
 The `laptime` Service has following metadata:
-- `address` -- alternative (or real) IP address of the barrier
+- `address` -- preferred IP address of the barrier
 
 
 c. **Offline mode**, "Local only"
