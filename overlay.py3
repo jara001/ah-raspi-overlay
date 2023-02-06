@@ -61,7 +61,7 @@ def get_ip():
     retries = 5 # Shortly after startup it is possible that network is not ready.
     IP = None
 
-    while retries > 0:
+    for _ in range(retries):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         try:
@@ -70,6 +70,7 @@ def get_ip():
             IP = s.getsockname()[0]
         except:
             IP = '127.0.0.1'
+            time.sleep(.5)
         else:
             return IP
         finally:
