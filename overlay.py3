@@ -414,7 +414,7 @@ else:  # No Arrowhead connection
 
     option = main_menu.show()
 
-    if option == MenuOptions.ProviderMode:
+    if option == MenuOptionsNoArrowhead.ProviderMode:
         update_status("Provider mode")
 
         provider_mode = True
