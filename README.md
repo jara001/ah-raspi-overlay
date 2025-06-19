@@ -167,7 +167,7 @@ Upon success, received system ID is briefly shown:
 
 ![Arrowhead Overlay ID: 7](./doc/screen_discovery_success.bmp)
 
-On the other hand, when this step fails, it is displayed to the user and the overlay starts the "Local only" mode of the barrier:
+On the other hand, when this step fails, it is displayed to the user and the overlay switches to a limited operation mode.
 
 ![Arrowhead Overlay << Failed >>](./doc/screen__failed_.bmp)
 
@@ -180,6 +180,8 @@ In case that ID is successfully received from Arrowhead Core, main menu is shown
 ![Arrowhead Overlay Select mode: 5 <  bfed32c   >...](./doc/screen_githash.bmp)
 
 _Note: The last menu item shows the short hash of current git commit._
+
+_Note: When Arrowhead Core is not available, "FindServer" is not available._
 
 In its default state the overlay automatically selects the first displayed menu item in 5 seconds. This countdown is stopped upon pressing one of the buttons, hiding the remaining time:
 
@@ -220,6 +222,10 @@ When "ProvideLap" mode is selected, the overlay register itself to the Arrowhead
 When successful, IDs of the overlay, service and selected interface are shown:
 
 ![Arrowhead Overlay P:7 I:2 S:16](./doc/screen_provider_ids.bmp)
+
+In contrast, when "ProvideLap" is selected without the Arrowhead Core available, port of the created websocket is shown:
+
+![Arrowhead Overlay Port: 1234](./doc/screen_provider_port.bmp)
 
 Upon pressing `OK` button, the barrier software is launched. As an active connection is required to start the software, it is temporarily launched locally. Meantime, the following screen is shown:
 

@@ -203,6 +203,12 @@ class MenuOptions(Enum):
     Version = (str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]).center(10), False
 
 
+class MenuOptionsNoArrowhead(Enum):
+    ProviderMode = "ProvideLap", True
+    LocalMode = "Local only", True
+    Version = (str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]).center(10), False
+
+
 class Menu(object):
 
     MENU_MOVE_LEFT = 19
@@ -276,7 +282,6 @@ class Menu(object):
         return options[index]
 
 
-main_menu = Menu("Select mode:", MenuOptions, MenuOptions.LocalMode, 5)
 
 
 ######################
@@ -357,6 +362,8 @@ if Client.id >= 0:
 
     time.sleep(1)
 
+    main_menu = Menu("Select mode:", MenuOptions, MenuOptions.LocalMode, 5)
+
     option = main_menu.show()
 
     if option == MenuOptions.FindServer:
@@ -399,6 +406,27 @@ if Client.id >= 0:
         while not GPIO.input(21):
             time.sleep(.1)
 
+
+else:  # No Arrowhead connection
+    time.sleep(1)
+
+    main_menu = Menu("Select mode:", MenuOptionsNoArrowhead, MenuOptions.LocalMode, 5)
+
+    option = main_menu.show()
+
+    if option == MenuOptions.ProviderMode:
+        update_status("Provider mode")
+
+        provider_mode = True
+
+        time.sleep(.5)
+
+        display.fill_rect(xoffset, 16, 128, 32, False)
+        display.text(get_ip(), xoffset, 16, True)
+        update_status("Port: %d" % (Client.port))
+
+        while not GPIO.input(21):
+            time.sleep(.1)
 
 time.sleep(.5)
 

@@ -160,6 +160,8 @@ update_status("Provider mode")
 
 update_status("P:%d I:%d S:%d" % (7, 2, 16), "provider_ids")
 
+update_status("Port: %d" % 1234, "provider_port")
+
 # M2 Awaiting connection
 update_status("Awaiting conn")
 
