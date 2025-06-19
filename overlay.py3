@@ -410,7 +410,7 @@ if Client.id >= 0:
 else:  # No Arrowhead connection
     time.sleep(1)
 
-    main_menu = Menu("Select mode:", MenuOptionsNoArrowhead, MenuOptions.LocalMode, 5)
+    main_menu = Menu("Select mode:", MenuOptionsNoArrowhead, MenuOptionsNoArrowhead.LocalMode, 5)
 
     option = main_menu.show()
 
