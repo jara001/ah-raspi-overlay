@@ -205,6 +205,7 @@ class MenuOptions(Enum):
 
 class MenuOptionsNoArrowhead(Enum):
     ProviderMode = "ProvideLap", True
+    FinalRace = "FinRaceMode", True
     LocalMode = "Local only", True
     Version = (str(subprocess.check_output("git log -1 --format=\"%h\"", shell = True))[2:-3]).center(10), False
 
@@ -356,6 +357,7 @@ except Exception as e:
 
 matches = []
 provider_mode = False
+finalrace_mode = False
 
 if Client.id >= 0:
     update_status("ID: %d" % Client.id)
@@ -410,7 +412,7 @@ if Client.id >= 0:
 else:  # No Arrowhead connection
     time.sleep(1)
 
-    main_menu = Menu("Select mode:", MenuOptionsNoArrowhead, MenuOptionsNoArrowhead.LocalMode, 5)
+    main_menu = Menu("Select mode:", MenuOptionsNoArrowhead, MenuOptionsNoArrowhead.FinalRace, 5)
 
     option = main_menu.show()
 
@@ -427,6 +429,13 @@ else:  # No Arrowhead connection
 
         while not GPIO.input(21):
             time.sleep(.1)
+
+    elif option == MenuOptionsNoArrowhead.FinalRace:
+        update_status("Final race mode")
+
+        finalrace_mode = True
+
+        time.sleep(.5)
 
 time.sleep(.5)
 
@@ -475,6 +484,8 @@ elif provider_mode:
     update_status("Awaiting conn")
     os.system("sh activate-provider.sh ws://%s:%d" % (get_ip(), Client.port))
     os.system("websocat -E --text ws-listen:%s:%d reuse:cmd:\"stdbuf -oL /home/pi/optic_barrier_sw_ah\"" % (get_ip(), Client.port))
+elif finalrace_mode:
+    os.system("stdbuf -oL /home/pi/optic_barrier_sw_ah | { while read line; do echo $line | curl --header \"Content-Type: application/json\" --header \"Accept: application/json\" --data @- 192.168.240.164/public/admin/lap_time; done }")
 else:
     os.system("/home/pi/optic_barrier_sw_ah")
 
